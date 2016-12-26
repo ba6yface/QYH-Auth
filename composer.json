@@ -14,8 +14,9 @@
         "php": ">= 5.5.3"
     },
     "autoload": {
-        "psr-0": {
-            "Decent\\Wechat\\": "wechat/"
+        "psr-4": {
+            "Decent\\Wechat\\": "wechat/",
+	    "Decent\\Util\\": "util/"
         }
     },
     "repositories": {
