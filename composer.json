@@ -1,0 +1,28 @@
+{
+    "name": "decent/wechat",
+    "description": "WeChat Auth",
+    "license": "MIT",
+    "keywords": ["dexter"],
+    "version": "1.0.0",
+    "authors": [
+        {
+            "name": "Dexter",
+            "email": "koaidw@163.com"
+        }
+    ],
+    "require": {
+        "php": ">= 5.5.25"
+    },
+
+    "autoload": {
+        "psr-0": {
+            "Decent\\Wechat": "wechat/"
+        }
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.phpcomposer.com"
+        }
+    }
+}
