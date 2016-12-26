@@ -13,7 +13,7 @@
     "require": {
         "php": ">= 5.5.4"
     },
-    "autoload": {
+    "autoload-dev": {
         "psr-4": {
             "Decent\\Wechat\\": "wechat/"
         }
