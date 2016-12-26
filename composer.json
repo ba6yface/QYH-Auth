@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-0": {
-            "Decent\\": "./"
+            "Decent\\Wechat\\": "wechat/"
         }
     },
     "repositories": {
