@@ -10,6 +10,7 @@
             "email": "koaidw@163.com"
         }
     ],
+    "minimum-stability": "dev",
     "require": {
         "php": ">= 5.5.2"
     },
