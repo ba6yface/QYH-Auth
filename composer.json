@@ -16,7 +16,7 @@
     "autoload": {
         "psr-4": {
             "Decent\\Wechat\\": "wechat/",
-	    "Decent\\Util\\": "util/"
+	    "Decent\\Util\\": "util/",
         }
     },
     "repositories": {
