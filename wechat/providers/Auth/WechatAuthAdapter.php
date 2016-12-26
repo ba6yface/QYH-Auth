@@ -2,12 +2,12 @@
 
 namespace Decent\Wechat\Providers\Auth;
 
+use App\User;
 use Decent\Wechat\Providers\Base;
 use Illuminate\Contracts\Auth\UserProvider;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Illuminate\Support\Str;
-use App\User;
 
 class WechatAuthAdapter extends Base
 {
