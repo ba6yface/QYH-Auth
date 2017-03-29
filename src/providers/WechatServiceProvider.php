@@ -15,7 +15,9 @@ class WechatServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
+        $this->publishes([
+            __DIR__.'/config/wechat.php' => config_path('wechat.php'),
+        ]);
     }
 
     /**
@@ -26,28 +28,12 @@ class WechatServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerAuthProvider();
-//        $this->registerDepartmentProvider();
-//        $this->registerMemberProvider();
     }
 
     public function registerAuthProvider()
     {
         $this->app->singleton('Wechat.Auth', function ($app) {
             return $this->app->make(config('wechat.providers.auth'));
-        });
-    }
-
-    public function registerDepartmentProvider()
-    {
-        $this->app->singleton('Wechat.Department', function ($app) {
-            return $this->app->make($app['config']['wechat']['providers']['department']);
-        });
-    }
-
-    public function registerMemberProvider()
-    {
-        $this->app->singleton('Wechat.Member', function ($app) {
-            return $this->app->make($app['config']['wechat']['providers']['member']);
         });
     }
 
@@ -60,8 +46,6 @@ class WechatServiceProvider extends ServiceProvider
     {
         return [
             'Wechat.Auth',
-//            'Wechat.Department',
-//           'Wechat.Member',
         ];
     }
 }

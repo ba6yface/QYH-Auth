@@ -11,17 +11,12 @@
         }
     ],
     "require": {
+        "guzzlehttp/guzzle": "^6.2",
         "php": ">= 5.5.4"
     },
     "autoload": {
         "psr-4": {
             "Decent\\Wechat\\": "src"
-        }
-    },
-    "repositories": {
-        "packagist": {
-            "type": "composer",
-            "url": "https://packagist.org"
         }
     }
 }
