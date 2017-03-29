@@ -2,32 +2,34 @@
 
 namespace Decent\Wechat\Providers\Auth;
 
-use App\User;
 use Decent\Wechat\Providers\Base;
+use Illuminate\Auth\AuthManager;
 use Illuminate\Contracts\Auth\UserProvider;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Illuminate\Support\Str;
+use App\User;
 
 class WechatAuthAdapter extends Base
 {
     const API_GET_LOGIN_INFO = "https://qyapi.weixin.qq.com/cgi-bin/service/get_login_info";
 
-    protected $userid;
+    protected $auth;
+    protected $userid;  //微信id
     protected $session;
     protected $cookie;
     protected $request;
-//    protected $provider;
     protected $loggedOut;
 
     public function __construct(SessionInterface $session,
-                                  Request $request)
+                                  Request $request,
+                                  AuthManager $auth)
     {
         parent::__construct();
 
+        $this->auth = $auth;
         $this->session = $session;
         $this->request = $request;
-//        $this->provider = $provider;
         $this->userid = $this->getUserid();
     }
 
@@ -39,16 +41,24 @@ class WechatAuthAdapter extends Base
      */
     public function getLoginInfo($code)
     {
-        return $this->http->parseJSON('json', [
+        $res = $this->http->parseJSON('json', [
             self::API_GET_LOGIN_INFO, [
                 'auth_code' => $code,
             ]
         ]);
+
+        if (config('wechat.backend_debug') && empty($res['user_info']['userid'])) {
+            $res['user_info']['userid'] = $code;
+            return $res;
+        }
+
+        return $res;
     }
 
     public function user()
     {
-        return User::where('qy_id', $this->getUserid())->first();
+        $qy_id  = $this->userid;
+        return User::where('qy_id', $qy_id)->first();
     }
 
     /**
@@ -93,6 +103,7 @@ class WechatAuthAdapter extends Base
         if (isset($res['user_info'])) {
             $this->userid = $res['user_info']['userid'];
             $this->updateSession($this->userid);
+            $this->auth->setUser($this->user());
             return true;
         } else {
             return false;
@@ -126,6 +137,10 @@ class WechatAuthAdapter extends Base
 
     public function guest()
     {
-        return is_null($this->userid);
+        if (!is_null($this->userid)) {
+            $this->auth->setUser($this->user());
+            return false;
+        }
+        return true;
     }
 }
