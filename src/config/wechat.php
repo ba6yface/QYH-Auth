@@ -1,76 +1,65 @@
 <?php
 
-/*
- * This file is part of jwt-auth.
- *
- * (c) Sean Tymon <tymon148@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 return [
-
-    'corp_id' => env('CORP_ID', 'abc123'),
-
-    'corp_key' => env('CORP_KEY', 'abc123'),
 
     /*
     |--------------------------------------------------------------------------
-    | Providers
+    | 企业号ID
+    |--------------------------------------------------------------------------
+    */
+    'corp_id' => env('CORP_ID', 'abc123'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | 企业号key
+    |--------------------------------------------------------------------------
+    */
+    'corp_key' => env('CORP_KEY', 'abc123'),
+
+    /**
+     * 配置微信扫码后重定向到认证地址
+    */
+    'auth_action' => route('wechat.login'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | 提供器
     |--------------------------------------------------------------------------
     |
-    | Specify the various providers used throughout the package.
+    | 指定微信认证中需要的一些具体实现
     |
     */
-
     'providers' => [
 
         /*
         |--------------------------------------------------------------------------
-        | User Provider
+        | 用户提供器
         |--------------------------------------------------------------------------
         |
-        | Specify the provider that is used to find the user based
-        | on the subject claim
+        | 指定用于根据企业号成员唯一ID获取用户的实现
         |
         */
-
-        'user' => 'Dex\Wechat\Providers\User\EloquentUserAdapter',
+        'user' => 'App\User',
 
         /*
         |--------------------------------------------------------------------------
-        | JWT Provider
+        | 会话提供器
         |--------------------------------------------------------------------------
         |
-        | Specify the provider that is used to create and decode the tokens.
+        | 指定用户id的会话管理实现
         |
         */
-
-        'jwt' => 'Tymon\JWTAuth\Providers\JWT\NamshiAdapter',
+        'session' => 'Decent\Wechat\Providers\SessionAdapter',
 
         /*
         |--------------------------------------------------------------------------
-        | Authentication Provider
+        | 微信认证提供器
         |--------------------------------------------------------------------------
         |
-        | Specify the provider that is used to authenticate users.
+        | 指定用于从微信获取认证信息的实现
         |
         */
-
-        'auth' => 'Tymon\JWTAuth\Providers\Auth\IlluminateAuthAdapter',
-
-        /*
-        |--------------------------------------------------------------------------
-        | Storage Provider
-        |--------------------------------------------------------------------------
-        |
-        | Specify the provider that is used to store tokens in the blacklist
-        |
-        */
-
-        'storage' => 'Tymon\JWTAuth\Providers\Storage\IlluminateCacheAdapter',
+        'wechat' => 'Decent\Wechat\Providers\WechatAdapter',
 
     ],
-
 ];

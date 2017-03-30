@@ -1,12 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Dex
- * Date: 006 11.6
- * Time: 下午 22:20
- */
-
-namespace Decent\Util;
+namespace Decent\Wechat;
 
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\HandlerStack;

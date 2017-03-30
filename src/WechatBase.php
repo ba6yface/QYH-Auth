@@ -1,18 +1,16 @@
 <?php
 
-namespace Decent\Wechat\Providers;
+namespace Decent\Wechat;
 
-use Decent\Util\Http;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\RequestInterface;
 
-class Base
+class WechatBase
 {
+    const API_GET_ACCESSTOKEN = "https://qyapi.weixin.qq.com/cgi-bin/gettoken";
+
     protected $corp_id;
     protected $corp_secret;
-
-    const API_GET_USERINFO_BY_CODE = "https://qyapi.weixin.qq.com/cgi-bin/user/getuserinfo";
-    const API_GET_ACCESSTOKEN = "https://qyapi.weixin.qq.com/cgi-bin/gettoken";
 
     protected $access_token;
     protected $http;
@@ -25,35 +23,27 @@ class Base
         $this->setAccessToken();
         $this->http->addMiddleware($this->accessTokenMiddleware());
     }
-    
-    public function getUserinfoByCode($code) {
-        return $this->http->parseJSON('get', [
-            self::API_GET_USERINFO_BY_CODE, [
-                'code' => $code,
-            ],
-
-        ]);
-    }
 
     /**
      * 获取access_token
      */
     protected function setAccessToken()
     {
+        $params = [
+            "corpid" => $this->corp_id,
+            "corpsecret" => $this->corp_secret,
+        ];
+
         $token = $this->http->parseJSON('get', [
-            self::API_GET_ACCESSTOKEN, [
-                "corpid" => $this->corp_id,
-                "corpsecret" => $this->corp_secret,
-            ],
+            self::API_GET_ACCESSTOKEN, $params,
         ]);
 
-        if (isset($token['access_token'])) {
-            $this->access_token = $token['access_token'];
-        } else {
-            $this->access_token = null;
-        }
+        $this->access_token = isset($token['access_token']) ? $token['access_token'] : null;
     }
 
+    /**
+     * 在每个请求中使用URL编码带上参数access_token
+    */
     protected function accessTokenMiddleware()
     {
         return function (callable $handler) {
@@ -68,7 +58,4 @@ class Base
             };
         };
     }
-
-
-
 }
