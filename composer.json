@@ -3,7 +3,6 @@
     "description": "WeChat Auth",
     "license": "MIT",
     "keywords": ["dexter"],
-    "version": "1.0.0",
     "authors": [
         {
             "name": "Dexter",
