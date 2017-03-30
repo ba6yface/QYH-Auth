@@ -27,13 +27,48 @@ class WechatServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->registerAuthProvider();
+        $this->registerUserProvider();
+        $this->registerSessionProvider();
+        $this->registerWechatProvider();
+
+        $this->registerWechatAuth();
+    }
+
+    protected function registerUserProvider()
+    {
+        $this->app->singleton('wechat.auth.user', function ($app) {
+            return $app->make(config('wechat.providers.user'));
+        });
+    }
+
+    /**
+     * Register the bindings for the Storage provider.
+     */
+    protected function registerSessionProvider()
+    {
+        $this->app->singleton('wechat.auth.session', function ($app) {
+            return $app->make(config('wechat.providers.session'));
+        });
+    }
+
+    /**
+     * Register the bindings for the Payload Factory.
+     */
+    protected function registerWechatProvider()
+    {
+        $this->app->singleton('wechat.auth.wechat', function ($app) {
+            return $app->make(config('wechat.providers.wechat'));
+        });
     }
 
     public function registerAuthProvider()
     {
-        $this->app->singleton('Wechat.Auth', function ($app) {
-            return $this->app->make(config('wechat.providers.auth'));
+        $this->app->singleton('wechat.auth', function ($app) {
+            return new WechatAuth(
+                $app['wechat.auth.user'],
+                $app['wechat.auth.session'],
+                $app['wechat.auth.wechat']
+            );
         });
     }
 
@@ -45,7 +80,7 @@ class WechatServiceProvider extends ServiceProvider
     public function provides()
     {
         return [
-            'Wechat.Auth',
+            'wechat.auth',
         ];
     }
 }

@@ -8,8 +8,8 @@ class Authenticate
 {
     public function handle($request, Closure $next)
     {
-        if (app('Wechat.Auth')->guest()) {
-            return app('Wechat.Auth')->redirectToLogin();
+        if (app('wechat.auth')->guest()) {
+            return app('wechat.auth')->redirectToLogin();
         }
 
         return $next($request);
