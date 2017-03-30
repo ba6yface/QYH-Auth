@@ -1,4 +1,4 @@
-# wxqy
+# 微信企业号授权登录
 ## 安装
 1. 使用composer下载扩展包  
   `composer require decent/wechat`
