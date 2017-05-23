@@ -31,7 +31,7 @@ class WechatServiceProvider extends ServiceProvider
         $this->registerSessionProvider();
         $this->registerWechatProvider();
 
-        $this->registerWechatAuth();
+        $this->registerAuthProvider();
     }
 
     protected function registerUserProvider()
@@ -67,7 +67,8 @@ class WechatServiceProvider extends ServiceProvider
             return new WechatAuth(
                 $app['wechat.auth.user'],
                 $app['wechat.auth.session'],
-                $app['wechat.auth.wechat']
+                $app['wechat.auth.wechat'],
+                app('auth')
             );
         });
     }

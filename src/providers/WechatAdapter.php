@@ -11,6 +11,7 @@ class WechatAdapter extends WechatBase implements WechatInterface
 
     public function getUserinfoByCode($code)
     {
+        return '001';
         $res = $this->http->parseJSON('json', [
             self::API_GET_LOGIN_INFO, [
                 'auth_code' => $code,

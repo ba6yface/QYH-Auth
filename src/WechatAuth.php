@@ -4,7 +4,8 @@ namespace Decent\Wechat;
 
 use Decent\Wechat\Contacts\UserInterface;
 use Decent\Wechat\Contacts\WechatInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Decent\Wechat\Contacts\SessionInterface;
+use Illuminate\Auth\AuthManager;
 
 class WechatAuth
 {
@@ -28,13 +29,17 @@ class WechatAuth
     */
     protected $userid;
 
-    public function __construct(UserInterface $user, SessionInterface $session, WechatInterface $wechat)
+    protected $auth;
+
+    public function __construct(UserInterface $user, SessionInterface $session, WechatInterface $wechat, AuthManager $auth)
     {
         $this->user = $user;
         $this->session = $session;
         $this->wechat = $wechat;
 
         $this->userid = $this->getUserid();
+
+        $this->auth = $auth;
     }
 
     /**
@@ -85,7 +90,7 @@ class WechatAuth
     protected function updateUserid($userid)
     {
         $this->userid = $userid;
-        $this->updateSession($userid);
+        $this->session->updateUserSession($userid);
     }
 
     /**
@@ -93,8 +98,9 @@ class WechatAuth
     */
     public function logout()
     {
-        $this->session->remove();
+        $this->session->removeUserSession();
         $this->userid = null;
+        return $this->redirectToLogin();
     }
 
     /**
@@ -116,7 +122,7 @@ class WechatAuth
     {
         $params = [
             'corp_id' => config('wechat.corp_id'),
-            'redirect_uri' => config('wechat.auth_action'),
+            'redirect_uri' => url(config('wechat.auth_action')),
             'usertype' => 'member',
         ];
 
