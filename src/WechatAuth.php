@@ -120,12 +120,17 @@ class WechatAuth
     */
     public function redirectToLogin()
     {
+        return redirect()->guest(config('wechat.login_page_url'));
+    }
+
+    public function getAuthUrl()
+    {
         $params = [
             'corp_id' => config('wechat.corp_id'),
             'redirect_uri' => url(config('wechat.auth_action')),
             'usertype' => 'member',
         ];
 
-        return redirect()->guest($this->wechat->getLoginUrl().'?'.http_build_query($params));
+        return $this->wechat->getLoginUrl().'?'.http_build_query($params);
     }
 }

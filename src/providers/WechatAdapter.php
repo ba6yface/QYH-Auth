@@ -17,7 +17,7 @@ class WechatAdapter extends WechatBase implements WechatInterface
             ]
         ]);
 
-        return empty($res['user_info']['userid']) ? null : $res['user_info']['userid'];
+        return empty($res['user_info']['userid']) ? config('wechat.backend_debug') ? $code : null : $res['user_info']['userid'];
     }
 
     public function getLoginUrl()
